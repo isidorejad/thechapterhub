@@ -1,0 +1,672 @@
+// models/Bookmark.js
+
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
+
+
+const bookmarkSchema = new Schema({
+
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+
+    story: { type: Schema.Types.ObjectId, ref: 'Story', required: true },
+
+}, { timestamps: true });
+
+
+
+bookmarkSchema.index({ user: 1, story: 1 }, { unique: true }); // Prevent duplicate bookmarks
+
+
+
+module.exports = mongoose.model('Bookmark', bookmarkSchema);
+
+
+
+// models/Comment.js
+
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
+
+
+const commentSchema = new Schema({
+
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+
+    story: { type: Schema.Types.ObjectId, ref: 'Story', required: true },
+
+    comment: { type: String, required: true },
+
+    parent_comment: { type: Schema.Types.ObjectId, ref: 'Comment' }, // Self-referencing for replies
+
+}, { timestamps: true });
+
+
+
+module.exports = mongoose.model('Comment', commentSchema);
+
+
+
+// models/ContentWarning.js
+
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
+
+
+const contentWarningSchema = new Schema({
+
+    name: { type: String, required: true, unique: true },
+
+    description: { type: String },
+
+}, { timestamps: true });
+
+
+
+module.exports = mongoose.model('ContentWarning', contentWarningSchema);
+
+
+
+// models/Episode.js
+
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
+
+
+const episodeSchema = new Schema({
+
+    story: { type: Schema.Types.ObjectId, ref: 'Story', required: true },
+
+    title: { type: String, required: true },
+
+    content_file: { type: String, required: true },
+
+    thumbnail: { type: String },
+
+    order: { type: Number, default: 1 },
+
+}, { timestamps: true });
+
+
+
+module.exports = mongoose.model('Episode', episodeSchema);
+
+
+
+// models/Follow.js
+
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
+
+
+const followSchema = new Schema({
+
+    follower: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+
+    followed: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+
+}, { timestamps: true });
+
+
+
+followSchema.index({ follower: 1, followed: 1 }, { unique: true }); // Prevent duplicate follows
+
+
+
+module.exports = mongoose.model('Follow', followSchema);
+
+
+
+
+
+// models/Genre.js
+
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
+
+
+const genreSchema = new Schema({
+
+    name: { type: String, required: true, unique: true },
+
+    description: { type: String },
+
+    slug: { type: String, required: true, unique: true },
+
+}, { timestamps: true });
+
+
+
+module.exports = mongoose.model('Genre', genreSchema);
+
+
+
+
+
+// models/Like.js
+
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
+
+
+const likeSchema = new Schema({
+
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+
+    story: { type: Schema.Types.ObjectId, ref: 'Story', required: true },
+
+}, { timestamps: true });
+
+
+
+likeSchema.index({ user: 1, story: 1 }, { unique: true }); // Prevent duplicate likes
+
+
+
+module.exports = mongoose.model('Like', likeSchema);
+
+
+
+
+
+// models/Notification.js
+
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
+
+
+const notificationSchema = new Schema({
+
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+
+    type: { type: String, required: true }, // e.g., 'new_comment', 'story_update', 'follow'
+
+    notifiable_type: { type: String }, // For polymorphic relation (e.g., 'Story', 'Comment', 'Episode')
+
+    notifiable_id: { type: Schema.Types.ObjectId }, // ID of the related entity
+
+    data: { type: Schema.Types.Mixed, required: true }, // Store as Mixed (JSON)
+
+    read_at: { type: Date }, // Timestamp when the notification was read
+
+}, { timestamps: true });
+
+
+
+module.exports = mongoose.model('Notification', notificationSchema);
+
+
+
+// models/PasswordResetToken.js
+
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
+
+
+const passwordResetTokenSchema = new Schema({
+
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+
+    token: { type: String, required: true, unique: true },
+
+    expires_at: { type: Date, required: true },
+
+}, { timestamps: true });
+
+
+
+module.exports = mongoose.model('PasswordResetToken', passwordResetTokenSchema);
+
+
+
+
+
+// models/PaymentMethod.js
+
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
+
+
+const paymentMethodSchema = new Schema({
+
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+
+    payment_token: { type: String, required: true },
+
+    card_last_four: { type: String, required: true },
+
+    card_brand: { type: String, required: true },
+
+    is_default: { type: Boolean, default: false },
+
+}, { timestamps: true });
+
+
+
+module.exports = mongoose.model('PaymentMethod', paymentMethodSchema);
+
+
+
+
+
+// models/ReadingProgress.js
+
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
+
+
+const readingProgressSchema = new Schema({
+
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+
+    episode: { type: Schema.Types.ObjectId, ref: 'Episode', required: true },
+
+    completed: { type: Boolean, default: false, required: true },
+
+    last_read_at: { type: Date, default: Date.now, required: true },
+
+}, { timestamps: true });
+
+
+
+readingProgressSchema.index({ user: 1, episode: 1 }, { unique: true }); // Prevent duplicate entries
+
+
+
+module.exports = mongoose.model('ReadingProgress', readingProgressSchema);
+
+
+
+
+
+// models/Share.js
+
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
+
+
+const shareSchema = new Schema({
+
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+
+    story: { type: Schema.Types.ObjectId, ref: 'Story' },
+
+    episode: { type: Schema.Types.ObjectId, ref: 'Episode' },
+
+    platform: { type: String, required: true }, // e.g., 'facebook', 'twitter', 'email', 'whatsapp'
+
+}, { timestamps: true });
+
+
+
+// Custom validation for either story or episode
+
+shareSchema.pre('validate', function(next) {
+
+    if (!this.story && !this.episode) {
+
+        next(new Error('Either story or episode must be provided.'));
+
+    } else if (this.story && this.episode) {
+
+        next(new Error('A share must be linked to either a story or an episode, but not both.'));
+
+    } else {
+
+        next();
+
+    }
+
+});
+
+
+
+module.exports = mongoose.model('Share', shareSchema);
+
+
+
+
+
+// models/Story.js
+
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
+
+
+const storySchema = new Schema({
+
+    title: { type: String, required: true },
+
+    writer: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+
+    genre: { type: Schema.Types.ObjectId, ref: 'Genre', required: true },
+
+    description: { type: String, required: true },
+
+    thumbnail: { type: String },
+
+    price: { type: Number, default: 0.00, min: 0.00, required: true }, // Store as Number for currency
+
+    content_file: { type: String }, // Path to the main story file (if it's a single file story)
+
+    is_featured: { type: Boolean, default: false, required: true },
+
+    is_premium: { type: Boolean, default: false, required: true },
+
+    age_restriction: { type: Number, min: 0 },
+
+    // No direct arrays here; we will fetch related Episodes, ContentWarnings, etc. via their respective models
+
+}, { timestamps: true });
+
+
+
+module.exports = mongoose.model('Story', storySchema);
+
+
+
+
+
+// models/StoryPurchase.js
+
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
+
+
+const storyPurchaseSchema = new Schema({
+
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+
+    story: { type: Schema.Types.ObjectId, ref: 'Story', required: true },
+
+    token_transaction: { type: Schema.Types.ObjectId, ref: 'TokenTransaction' }, // Optional reference to a transaction
+
+    price_paid: { type: Number, required: true, min: 0.00 },
+
+}, { timestamps: true });
+
+
+
+// Consider adding a unique index if a user can only purchase a story once
+
+// storyPurchaseSchema.index({ user: 1, story: 1 }, { unique: true });
+
+
+
+module.exports = mongoose.model('StoryPurchase', storyPurchaseSchema);
+
+
+
+
+
+// models/StoryView.js
+
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
+
+
+const storyViewSchema = new Schema({
+
+    story: { type: Schema.Types.ObjectId, ref: 'Story', required: true },
+
+    user: { type: Schema.Types.ObjectId, ref: 'User' }, // Nullable for guests
+
+    viewed_at: { type: Date, default: Date.now, required: true },
+
+    ip_address: { type: String },
+
+}, { timestamps: false }); // As per your original schema, no createdAt/updatedAt
+
+
+
+module.exports = mongoose.model('StoryView', storyViewSchema);
+
+
+
+// models/StoryWarning.js (This becomes a 'join' collection in MongoDB for many-to-many)
+
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
+
+
+const storyWarningSchema = new Schema({
+
+    story: { type: Schema.Types.ObjectId, ref: 'Story', required: true },
+
+    content_warning: { type: Schema.Types.ObjectId, ref: 'ContentWarning', required: true },
+
+}, { timestamps: true });
+
+
+
+storyWarningSchema.index({ story: 1, content_warning: 1 }, { unique: true });
+
+
+
+module.exports = mongoose.model('StoryWarning', storyWarningSchema);
+
+
+
+
+
+// models/TokenTransaction.js
+
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
+
+
+const tokenTransactionSchema = new Schema({
+
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+
+    amount: { type: Number, required: true, validate: {
+
+        validator: function(v) { return v !== 0; },
+
+        message: 'Amount cannot be zero.'
+
+    }},
+
+    type: { type: String, required: true }, // e.g., 'purchase', 'story_read', 'bonus', 'refund'
+
+    transactionable_type: { type: String }, // For polymorphic relation (e.g., 'StoryPurchase', 'Episode')
+
+    transactionable_id: { type: Schema.Types.ObjectId }, // ID of the related entity
+
+    description: { type: String },
+
+    status: { type: String, default: 'completed', enum: ['completed', 'pending', 'failed', 'refunded'], required: true },
+
+}, { timestamps: true });
+
+
+
+module.exports = mongoose.model('TokenTransaction', tokenTransactionSchema);
+
+
+
+// models/User.js (Already shown above, but included for completeness)
+
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
+
+
+const userSchema = new Schema({
+
+    name: { type: String, required: true },
+
+    email: { type: String, required: true, unique: true },
+
+    password: { type: String, required: true },
+
+    role: { type: String, enum: ['user', 'admin', 'writer'], default: 'user', required: true },
+
+    dob: { type: Date },
+
+    contact_number: { type: String },
+
+    address: { type: String },
+
+    profile_picture: { type: String },
+
+    language: { type: String, default: 'en', required: true },
+
+    timezone: { type: String, default: 'UTC', required: true },
+
+    is_verified: { type: Boolean, default: false, required: true },
+
+}, { timestamps: true });
+
+
+
+userSchema.pre('save', async function(next) {
+
+    if (this.isModified('password')) {
+
+        // Here you would hash the password, e.g., using bcrypt
+
+        // const bcrypt = require('bcryptjs');
+
+        // this.password = await bcrypt.hash(this.password, 10);
+
+    }
+
+    next();
+
+});
+
+
+
+module.exports = mongoose.model('User', userSchema);
+
+
+
+
+
+
+
+// models/UserToken.js
+
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
+
+
+const userTokenSchema = new Schema({
+
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true, unique: true }, // One balance record per user
+
+    balance: { type: Number, default: 15.00, min: 0.00, required: true },
+
+}, { timestamps: true });
+
+
+
+module.exports = mongoose.model('UserToken', userTokenSchema);
+
+
+
+// models/VerificationToken.js
+
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
+
+
+const verificationTokenSchema = new Schema({
+
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true, unique: true }, // One active token per user
+
+    token: { type: String, required: true, unique: true },
+
+    expires_at: { type: Date, required: true },
+
+}, { timestamps: true });
+
+
+
+module.exports = mongoose.model('VerificationToken', verificationTokenSchema);
+
+
+
+// models/index.js
+
+const mongoose = require('mongoose'); // Mongoose is required if you define models within files
+
+const path = require('path');
+
+const fs = require('fs');
+
+
+
+const models = {};
+
+
+
+// Dynamically load all Mongoose models
+
+fs.readdirSync(__dirname)
+
+    .filter(file => {
+
+        return (file.indexOf('.') !== 0) &&
+
+               (file !== 'index.js') &&
+
+               (file.slice(-3) === '.js');
+
+    })
+
+    .forEach(file => {
+
+        const modelName = path.basename(file, '.js');
+
+        // Require each model file to register it with Mongoose
+
+        models[modelName] = require(path.join(__dirname, file));
+
+    });
+
+
+
+module.exports = models; // Export all Mongoose models
+
+
+

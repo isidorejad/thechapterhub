@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Verify Email Address</title>
+    <style>
+        body {
+            margin: 0; padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9fafb;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .logo {
+            max-width: 150px;
+            height: auto;
+        }
+        h1 {
+            color: #111827;
+            font-size: 24px;
+            margin-top: 15px;
+        }
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        .button-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #ff023e; /* Your brand color */
+            color: #fff;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .footer {
+            font-size: 12px;
+            text-align: center;
+            color: #6b7280;
+            margin-top: 40px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        .footer a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <!-- <img src="{{logoUrl}}" alt="The Chapter Hub Logo" class="logo" /> -->
+            <img src="https://drive.google.com/uc?id=1Aqwy34Duypvf5eYmQC07Lf-pYVWkjHEb" alt="The Chapter Hub Logo" class="logo" />
+            <h1>Verify Your Email</h1>
+        </div>
+
+        <p>Hi {{name}},</p>
+        <p>Thanks for joining The Chapter Hub! Please verify your email address to activate your account by clicking the button below:</p>
+
+        <div class="button-container">
+            <a href="{{verificationUrl}}" class="button">Verify Email Address</a>
+        </div>
+
+        <p>If you didn’t create an account with us, please ignore this email.</p>
+
+        <div class="footer">
+            <p>If the button above does not work, please copy and paste this URL into your web browser:</p>
+            <p><a href="{{verificationUrl}}">{{verificationUrl}}</a></p>
+            <p>&copy; {{year}} The Chapter Hub. All rights reserved.</p>
+            <p>Need help? <a href="mailto:{{supportEmail}}">{{supportEmail}}</a></p>
+        </div>
+    </div>
+</body>
+</html>

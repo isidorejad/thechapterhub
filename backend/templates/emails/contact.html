@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Contact Form Submission</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo {
+            max-width: 150px; /* Adjust as needed */
+            height: auto;
+        }
+        h1 {
+            color: #ff023e; /* Your brand color */
+            text-align: center;
+            margin-top: 15px;
+            margin-bottom: 25px;
+        }
+        .detail-item {
+            margin-bottom: 12px;
+        }
+        .detail-item strong {
+            color: #555;
+        }
+        .message-box {
+            background-color: #f9f9f9;
+            border-left: 3px solid #ff023e; /* Accent line */
+            padding: 15px;
+            border-radius: 4px;
+            white-space: pre-wrap; /* Preserves line breaks from the message */
+            margin-top: 10px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.85em;
+            color: #777;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://drive.google.com/uc?id=1Aqwy34Duypvf5eYmQC07Lf-pYVWkjHEb" alt="The Chapter Hub Logo" class="logo" />
+
+            <!-- {% comment %} <img src="{{logoUrl}}" alt="The Chapter Hub Logo" class="logo"> {% endcomment %} -->
+        </div>
+        <h1>New Contact Form Submission</h1>
+        <p>You've received a new message from your website's contact form. Here are the details:</p>
+        <div class="detail-item">
+            <strong>Name:</strong> {{name}}
+        </div>
+        <div class="detail-item">
+            <strong>Email:</strong> <a href="mailto:{{email}}" style="color: #2563eb; text-decoration: none;">{{email}}</a>
+        </div>
+        <div class="detail-item">
+            <strong>Phone:</strong> {{phone}}
+        </div>
+        <div class="detail-item">
+            <strong>Subject:</strong> {{subject}}
+        </div>
+        <div class="detail-item">
+            <strong>Message:</strong>
+            <div class="message-box">
+                {{message}}
+            </div>
+        </div>
+        <div class="detail-item">
+            <strong>Subscribe to updates:</strong> {{subscribe}}
+        </div>
+        <div class="footer">
+            <p>This email was sent from the contact form on The Chapter Hub website.</p>
+            <p>&copy; {{year}} The Chapter Hub. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
